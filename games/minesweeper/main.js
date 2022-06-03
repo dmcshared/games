@@ -127,7 +127,7 @@ function createHTMLBoard(flags) {
       grid[x][y] = cell;
       topElement.appendChild(cell);
 
-      cell.addEventListener("contextmenu", (e) => {
+      const flag = (e) => {
         e.preventDefault();
         if (
           !cell.classList.contains("flag") &&
@@ -150,9 +150,9 @@ function createHTMLBoard(flags) {
           if (flags.changeBombNums)
             changeNeighbors(grid, x, y, 1, flags.verifyFlags);
         }
-      });
+      };
 
-      cell.addEventListener("click", (e) => {
+      const sweep = (e) => {
         if (
           cell.classList.contains("hidden") &&
           !cell.classList.contains("flag")
@@ -167,7 +167,15 @@ function createHTMLBoard(flags) {
             }
           }
         }
-      });
+      };
+
+      cell.addEventListener("contextmenu", (e) =>
+        flags.flagSwap ? sweep(e) : flag(e)
+      );
+
+      cell.addEventListener("click", (e) =>
+        flags.flagSwap ? flag(e) : sweep(e)
+      );
     }
   }
 
@@ -308,6 +316,7 @@ const rules = {
   w: +urlParams.get("w") || (bp.content.offsetWidth / 52) | 0,
   h: +urlParams.get("h") || (bp.content.offsetHeight / 52) | 0,
   b: +urlParams.get("b"),
+  flagSwap: false,
   changeBombNums: (urlParams.get("cbn") || "false") === "true",
   verifyFlags: (urlParams.get("vf") || "false") === "true",
 };
@@ -353,6 +362,26 @@ bp.addMenuItemOnOff(
   },
   () => {
     rules.verifyFlags = false;
+  }
+);
+bp.addMenuItemOnOff(
+  (ctx) => {
+    ctx.fillStyle = "#00a05a";
+    ctx.beginPath();
+    ctx.arc(0.5, 0.5, 0.4, 0, 2 * Math.PI);
+    ctx.fill();
+  },
+  (ctx) => {
+    ctx.fillStyle = "#ff426c";
+    ctx.beginPath();
+    ctx.arc(0.5, 0.5, 0.4, 0, 2 * Math.PI);
+    ctx.fill();
+  },
+  () => {
+    rules.flagSwap = true;
+  },
+  () => {
+    rules.flagSwap = false;
   }
 );
 
