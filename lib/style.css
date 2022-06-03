@@ -1,0 +1,66 @@
+@import url(https://unpkg.com/reasonable-colors@0.4.0/reasonable-colors.css);
+
+:root {
+  --fg: var(--color-raspberry-2);
+  --bgl: var(--color-gray-5);
+  --bg: var(--color-gray-6);
+  --c1: red;
+  --c2: blue;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: monospace;
+  font-size: 12px;
+  color: var(--fg);
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: 1fr 8cm;
+  grid-template-rows: 1fr;
+  height: 100vh;
+}
+
+.page input[type="checkbox"] {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.page .content {
+  grid-row: 1;
+  background: var(--bg);
+  grid-column: 1 / 3;
+}
+
+.page .menu {
+  padding-top: 0.49cm;
+  padding-left: 0.49cm;
+
+  background: var(--bgl);
+  grid-column: 2;
+  grid-row: 1;
+  visibility: collapse;
+}
+
+.page input[type="checkbox"]:checked ~ .content {
+  grid-column: 1;
+  grid-row: 1;
+}
+.page input[type="checkbox"]:checked ~ .menu {
+  visibility: visible;
+}
+
+.page .menu canvas {
+  flex: 0 0 0.5cm;
+  width: 1cm;
+  height: 1cm;
+  background: var(--bg);
+
+  margin-right: 0.5cm;
+  margin-bottom: 0.5cm;
+}
